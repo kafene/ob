@@ -1,6 +1,7 @@
 <?php namespace ob;
 
 # Something to do with output buffering.
+# See http://www.php.net/manual/en/ref.outcontrol.php
 
 # Usage:
 # Start caching output buffer
@@ -11,7 +12,18 @@
  */
 class Buffer {
     protected $handlers; # Output buffering handlers
+    protected static $instance;
     private $buffer = ''; # Buffer contents
+
+    /**
+     * Optional singleton pattern.
+     * Although, recommended, because this can handle
+     * all output buffers with one instance.
+     */
+     static function getInstance() {
+         return static::$instance
+            ?: (static::$instance = new static);
+     }
 
     /**
      * Register an output buffering callback
